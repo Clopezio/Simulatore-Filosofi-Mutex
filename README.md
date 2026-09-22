@@ -19,6 +19,10 @@ Per compilare ed eseguire direttamente:
 make run
 ```
 
+Nell'output, `F1`, `F2` e così via indicano le cinque forchette. Per esempio,
+`[ha: F1] [aspetta: F2]` significa che il filosofo possiede la forchetta 1 ed è
+fermo in attesa della forchetta 2.
+
 ## Come funziona
 
 I cinque filosofi sono rappresentati da cinque thread. Tra ogni coppia di

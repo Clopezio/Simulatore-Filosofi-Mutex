@@ -43,24 +43,30 @@ void *filosofo(void *argomento)
     }
 
     for (pasto = 1; pasto <= NUM_PASTI; pasto++) {
-        printf("Filosofo %d sta pensando.\n", id + 1);
+        printf("Filosofo %d [ha: nessuna] sta pensando.\n", id + 1);
         pausa(100 + id * 30);
 
-        printf("Filosofo %d ha fame.\n", id + 1);
+        printf("Filosofo %d [ha: nessuna] [aspetta: F%d]\n",
+               id + 1, prima + 1);
 
         /* Se una forchetta è occupata, il thread aspetta qui. */
         pthread_mutex_lock(&forchette[prima]);
+
+        printf("Filosofo %d [ha: F%d] [aspetta: F%d]\n",
+               id + 1, prima + 1, seconda + 1);
         pthread_mutex_lock(&forchette[seconda]);
 
-        printf("Filosofo %d sta mangiando (pasto %d/%d).\n",
-               id + 1, pasto, NUM_PASTI);
+        printf("Filosofo %d [ha: F%d, F%d] sta mangiando (pasto %d/%d).\n",
+               id + 1, prima + 1, seconda + 1, pasto, NUM_PASTI);
         pausa(150 + id * 30);
 
+        printf("Filosofo %d [ha: F%d, F%d] posa le forchette.\n",
+               id + 1, prima + 1, seconda + 1);
         pthread_mutex_unlock(&forchette[seconda]);
         pthread_mutex_unlock(&forchette[prima]);
     }
 
-    printf("Filosofo %d ha terminato.\n", id + 1);
+    printf("Filosofo %d [ha: nessuna] ha terminato.\n", id + 1);
     return NULL;
 }
 
