@@ -7,10 +7,10 @@
 #define NUM_FILOSOFI 5
 #define NUM_PASTI 3
 
-/* Ogni mutex rappresenta una forchetta condivisa da due filosofi. */
+/* ogni mutex rappresenta una forchetta condivisa da due filosofi */
 pthread_mutex_t forchette[NUM_FILOSOFI];
 
-/* Ferma un thread per pochi millisecondi, per simulare il tempo che passa. */
+/* ferma un thread per pochi millisecondi per simulare il tempo che passa */
 void pausa(long millisecondi)
 {
     struct timespec tempo;
@@ -20,7 +20,7 @@ void pausa(long millisecondi)
     nanosleep(&tempo, NULL);
 }
 
-/* Questa funzione viene eseguita da ogni thread-filosofo. */
+/* questa funzione viene eseguita da ogni thread filosofo */
 void *filosofo(void *argomento)
 {
     int id = *(int *)argomento;
@@ -31,8 +31,8 @@ void *filosofo(void *argomento)
     int pasto;
 
     /*
-     * Tutti prendono prima la forchetta con il numero più basso.
-     * Così non si crea un'attesa circolare e non avviene il deadlock.
+     * tutti prendono prima la forchetta con il numero più basso
+     * così non si crea un'attesa circolare e non avviene il deadlock
      */
     if (sinistra < destra) {
         prima = sinistra;
@@ -49,7 +49,7 @@ void *filosofo(void *argomento)
         printf("Filosofo %d [ha: nessuna] [aspetta: F%d]\n",
                id + 1, prima + 1);
 
-        /* Se una forchetta è occupata, il thread aspetta qui. */
+        /* se una forchetta è occupata il thread aspetta qui */
         pthread_mutex_lock(&forchette[prima]);
 
         printf("Filosofo %d [ha: F%d] [aspetta: F%d]\n",
@@ -76,23 +76,23 @@ int main(void)
     int id[NUM_FILOSOFI];
     int i;
 
-    /* Prepariamo le cinque forchette. */
+    /* cinque forchette */
     for (i = 0; i < NUM_FILOSOFI; i++) {
         pthread_mutex_init(&forchette[i], NULL);
     }
 
-    /* Creiamo un thread per ogni filosofo. */
+    /* un thread per ogni filosofo */
     for (i = 0; i < NUM_FILOSOFI; i++) {
         id[i] = i;
         pthread_create(&thread[i], NULL, filosofo, &id[i]);
     }
 
-    /* Il main aspetta che tutti i filosofi abbiano finito. */
+    /* il main aspetta che tutti i filosofi abbiano finito */
     for (i = 0; i < NUM_FILOSOFI; i++) {
         pthread_join(thread[i], NULL);
     }
 
-    /* Le forchette non servono più e possono essere distrutte. */
+    /* le forchette non servono piu' e possono essere distrutte */
     for (i = 0; i < NUM_FILOSOFI; i++) {
         pthread_mutex_destroy(&forchette[i]);
     }
